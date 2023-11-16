@@ -1,5 +1,9 @@
 import os
 
-FOLDER_PATH = os.path.abspath("/Users/eugenemarkin/Downloads/ALL")
 SAMPLE_RATE = 44100
-OUT_MP3_PATH = os.path.abspath("Users/eugenemarkin/Documents/meditation/output/out.mp3")
+
+ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
+
+FOLDER_PATH =  ROOT_DIR + "/input"
+MUSIC_PATH = ROOT_DIR + "/music/music.wav"
+OUT_MP3_PATH = ROOT_DIR + "/output/out.mp3"

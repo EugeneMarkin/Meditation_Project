@@ -7,8 +7,8 @@ from django.shortcuts import render
 from django.http import FileResponse
 from django.conf import settings
 
-from meditation.model import generate
-from meditation.constants import OUT_MP3_PATH
+from production import generate
+from logic.constants import OUT_MP3_PATH
 
 logger = logging.getLogger(__name__)
 

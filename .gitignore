@@ -1,4 +1,5 @@
 *.aif
 *.wav
+*.mp3
 output/
 __pycache__/

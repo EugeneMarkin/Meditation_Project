@@ -1,15 +1,8 @@
-import sys
-
 from logic.input import InputFile, SoundCollection
 from logic.output import OutputFile
 from logic.model import Section
 
-
 def generate():
-    '''
-    An example function to locally generate a meditation file
-    '''
-
     sc = SoundCollection(INPUT_PATH)
     out_file = OutputFile(60 * 3 * SAMPLE_RATE)
 
@@ -29,35 +22,3 @@ def generate():
     out_file.add_section(sec_intense, 60)
 
     out_file.save_mp3()
-
-def transcribe():
-    '''
-    transcribes all files in the source folder
-    so that they can be used in audio generation
-    '''
-    sc = SoundCollection(FOLDER_PATH)
-    for s in sc.sounds:
-        print("file: ", s.name, "\n")
-        try:
-            path = FOLDER_PATH + "/text/" + s.name + ".txt"
-            if os.path.exists(path):
-                 continue
-            res = s.transcribe()
-            print(res)
-            if res == None:
-                 continue
-            with open(path, mode = "w") as f:
-                f.write(res)
-        except:
-            continue
-    return sc
-
-if __name__ == "__main__":
-    argument = sys.argv[0]
-
-    if argument == 'transcribe':
-        transcribe()
-    elif argument == 'generate':
-        generate()
-    else:
-        print("unknown argument")

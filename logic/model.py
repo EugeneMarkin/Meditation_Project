@@ -99,19 +99,14 @@ class Section:
 
         # calculate the number of grains that fits the current duration
         n_grains = int(self.dur * self.mood.density())
-        print("number of grains ", n_grains)
-        print("length of self buffer", len(self.buf))
         pos = 0
         incr = (self.dur / n_grains) / 2
         for i in range(1, n_grains):
             if pos >= len(self.buf):
                 break
             # generate grain
-            print("i ", i)
             sound = random.choice(files)
-            print("name of the sound ", sound.name, "dur ", sound.duration, "buf len", len(sound.buf))
             grain_buf = sound.buf.slice(self.mood.grain_range(sound))
-            print("grain buf is", grain_buf, " len ", len(grain_buf))
             # Apply randomized amp to each grain
             grain_buf = grain_buf * self.mood.amp()
             # Apply play rate
@@ -146,5 +141,5 @@ def generate():
     out_file.save("/Users/eugenemarkin/Documents/meditation/output/out.wav")
 
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     #generate()
