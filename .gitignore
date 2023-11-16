@@ -1,0 +1,4 @@
+*.aif
+*.wav
+output/
+__pycache__/
