@@ -26,7 +26,7 @@ Find the resulting file at:
 
 `meditation_project/output/out.mp3`
 
-
+Change the contents of the function `'generate'` in `local.py`
 
 ### Run server on localhost
 
