@@ -1,6 +1,6 @@
-from logic.input import InputFile, SoundCollection
-from logic.output import OutputFile
-from logic.model import Section
+from generator.input import InputFile, SoundCollection
+from generator.output import OutputFile
+from generator.model import Section
 
 def generate():
     sc = SoundCollection(INPUT_PATH)

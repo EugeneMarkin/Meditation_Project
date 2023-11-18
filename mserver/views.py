@@ -8,7 +8,7 @@ from django.http import FileResponse
 from django.conf import settings
 
 from production import generate
-from logic.constants import OUT_MP3_PATH
+from constants import OUT_MP3_PATH
 
 logger = logging.getLogger(__name__)
 

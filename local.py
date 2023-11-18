@@ -1,62 +1,38 @@
 import sys
 
-from logic.input import InputFile, SoundCollection
-from logic.output import OutputFile
-from logic.model import Section
+from generator.input import SoundCollection
+from generator.output import get_out_file
+from generator.model import Section, Mood
+from constants import IN_MP3_PATH
 
 
 def generate():
     '''
     An example function to locally generate a meditation file
     '''
+    out = get_out_file()
 
-    sc = SoundCollection(INPUT_PATH)
-    out_file = OutputFile(60 * 3 * SAMPLE_RATE)
+    out.add(dur=30.0, kw="body", mood=Mood.Normal, at_time=0.0)
+    out.add(dur=30.0, kw="relax", mood=Mood.Relaxed, at_time=30.0)
+    out.add(dur=60.0, kw="body", mood=Mood.Uncanny, at_time=60.0)
+    out.add(dur=60.0, kw="relax", mood=Mood.Creepy, at_time=120.0)
+    out.add(dur=60.0, kw="mind", mood=Mood.Intense, at_time=180.0)
 
-    sec_normal = Section(dur = 20.0, files = sc.get_by_keyword("body"), mood = Mood.Normal)
-    out_file.add_section(sec_normal, at_time = 0.0)
+    out.save_mp3()
 
-    sec_relaxed = Section(dur = 20.0, files = sc.get_by_keyword("relax"), mood = Mood.Relaxed)
-    out_file.add_section(sec_relaxed, at_time = 20.0)
-
-    sec_uncanny = Section(dur = 30.0, files = sc.get_by_keyword("deep"), mood = Mood.Uncanny)
-    out_file.add_section(sec_uncanny, 30.0)
-
-    sec_creepy = Section(dur = 40.0, files = sc.get_by_keyword("relax"), mood = Mood.Creepy)
-    out_file.add_section(sec_creepy, 50)
-
-    sec_intense = Section(dur = 40.0, files = sc.get_by_keyword("mind"), mood = Mood.Intense)
-    out_file.add_section(sec_intense, 60)
-
-    out_file.save_mp3()
-
-def transcribe():
+def prepare():
     '''
-    transcribes all files in the source folder
+    converts all input files to wav and transcribes them to text,
     so that they can be used in audio generation
     '''
-    sc = SoundCollection(FOLDER_PATH)
-    for s in sc.sounds:
-        print("file: ", s.name, "\n")
-        try:
-            path = FOLDER_PATH + "/text/" + s.name + ".txt"
-            if os.path.exists(path):
-                 continue
-            res = s.transcribe()
-            print(res)
-            if res == None:
-                 continue
-            with open(path, mode = "w") as f:
-                f.write(res)
-        except:
-            continue
-    return sc
+    sc = SoundCollection(IN_MP3_PATH)
+    sc.prepare()
 
 if __name__ == "__main__":
-    argument = sys.argv[0]
-
-    if argument == 'transcribe':
-        transcribe()
+    argument = sys.argv[1]
+    print("arg ", argument)
+    if argument == 'prepare':
+        prepare()
     elif argument == 'generate':
         generate()
     else:

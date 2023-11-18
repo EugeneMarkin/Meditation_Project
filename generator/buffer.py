@@ -67,12 +67,18 @@ class StereoBuffer:
 
     def __copy__(self):
         cp = StereoBuffer(self.size)
-        cp.left = self.left.copy()
-        cp.right = self.right.copy()
+        cp.left = copy(self.left)
+        cp.right = copy(self.right)
         return cp
 
     def __len__(self):
         return self.size
+
+    def __mul__(self, other):
+        if isinstance(other, float):
+            self.left = self.left * other
+            self.right = self.right * other
+        return self
 
     def write(self, buf: Buffer, pan_: float, at: int):
         """

@@ -1,10 +1,10 @@
-from constants import SAMPLE_RATE, FOLDER_PATH
-from enum import Enum
-from input import InputFile, SoundCollection
-from buffer import Buffer, StereoBuffer
-from output import OutputFile
 import numpy as np
 import random
+from enum import Enum
+
+from constants import SAMPLE_RATE, IN_MP3_PATH
+from generator.input import InputFile, SoundCollection
+from generator.buffer import Buffer, StereoBuffer
 
 class Mood(Enum):
     """
@@ -65,7 +65,7 @@ class Mood(Enum):
         """
         Multiply the source signals to this value
         """
-        amps = [0.5, 0.4, 0.7, 0.7, 0.8]
+        amps = [0.91, 0.8, 0.9, 0.9, 1.0]
         return amps[self.value]
 
     def pan(self):
@@ -81,7 +81,7 @@ class Section:
     """
     A section is a semi-ramdomly generated snippet of audio
     """
-    def __init__(self, dur: float, files, mood):
+    def __init__(self, dur, files, mood):
         """
         dur - the desired length of the snippet in seconds
         files - a list of source files of type InputFile, from which the snippet is generated
@@ -117,28 +117,6 @@ class Section:
             pos = random.randint(pos, pos + len(grain_buf))
             self.buf.write(grain_buf, pan_ = self.mood.pan(), at = pos)
             pos += len(grain_buf)
-
-
-def generate():
-    sc = SoundCollection(FOLDER_PATH)
-    out_file = OutputFile(60 * 3 * SAMPLE_RATE)
-
-    sec_normal = Section(dur = 20.0, files = sc.get_by_keyword("body"), mood = Mood.Normal)
-    out_file.add_section(sec_normal, at_time = 0.0)
-
-    sec_relaxed = Section(dur = 20.0, files = sc.get_by_keyword("relax"), mood = Mood.Relaxed)
-    out_file.add_section(sec_relaxed, at_time = 20.0)
-
-    sec_uncanny = Section(dur = 30.0, files = sc.get_by_keyword("deep"), mood = Mood.Uncanny)
-    out_file.add_section(sec_uncanny, 30.0)
-
-    sec_creepy = Section(dur = 40.0, files = sc.get_by_keyword("relax"), mood = Mood.Creepy)
-    out_file.add_section(sec_creepy, 50)
-
-    sec_intense = Section(dur = 40.0, files = sc.get_by_keyword("mind"), mood = Mood.Intense)
-    out_file.add_section(sec_intense, 60)
-
-    out_file.save("/Users/eugenemarkin/Documents/meditation/output/out.wav")
 
 
 #if __name__ == "__main__":
