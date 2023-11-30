@@ -30,6 +30,7 @@ class InputFile:
         if not os.path.exists(self.wav_path):
             print("Something went wrong. There's no wav file for ", self.name)
         data, fs = librosa.load(self.wav_path, sr = SAMPLE_RATE)
+        data = list(data)
         self.buf = Buffer(len(data), data = data)
         self.duration = float(len(data))/SAMPLE_RATE
 
