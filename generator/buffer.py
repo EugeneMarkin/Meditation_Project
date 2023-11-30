@@ -24,7 +24,7 @@ class Buffer:
         return len(self.data)
 
     def __copy__(self):
-        return Buffer(len(self), np.copy(self.data))
+        return Buffer(len(self), np.copy(list(self.data)))
 
     @property
     def play_rate(self):
