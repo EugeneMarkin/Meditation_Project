@@ -19,6 +19,7 @@ OUT_PATH = "/Users/eugenemarkin/Documents/meditation/output"
 def get_out_file():
     sc = SoundCollection(IN_MP3_PATH)
     music, fs = librosa.load(MUSIC_PATH, sr=SAMPLE_RATE, mono=False)
+    music = list(music)
     dur = len(music[0])
 
     music_buf = StereoBuffer(dur)
