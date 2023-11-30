@@ -1,6 +1,6 @@
 from generator.input import InputFile, SoundCollection
 from generator.output import get_out_file
-from generator.model import Section
+from generator.model import Section, Mood
 
 def generate():
     out = get_out_file()
