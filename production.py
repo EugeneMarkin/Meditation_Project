@@ -12,5 +12,3 @@ def generate():
     out.add(dur=60.0, kw="mind", mood=Mood.Intense, at_time=180.0)
 
     out.save_mp3()
-
-    out_file.save_mp3()
