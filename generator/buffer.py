@@ -7,6 +7,11 @@ class Buffer:
 
     def __init__(self, size, data = []):
         self.pr = 1
+        try:
+            data = list(data)
+        except Exception as e:
+            print("Buffer input is not a list ", e)
+
         if data != []:
             self.data = np.array(data)
         else:
@@ -24,7 +29,7 @@ class Buffer:
         return len(self.data)
 
     def __copy__(self):
-        return Buffer(len(self), list(np.copy(self.data)))
+        return Buffer(len(self), np.copy(self.data))
 
     @property
     def play_rate(self):
