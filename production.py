@@ -2,7 +2,7 @@ from generator.input import InputFile, SoundCollection
 from generator.output import get_out_file
 from generator.model import Section, Mood
 
-def generate():
+async def generate():
     out = get_out_file()
 
     out.add(dur=30.0, kw="body", mood=Mood.Normal, at_time=0.0)
