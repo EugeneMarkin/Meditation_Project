@@ -5,8 +5,9 @@ from copy import copy
 
 class Buffer:
 
-    def __init__(self, size, data = []):
+    def __init__(self, size, data = None):
         self.pr = 1
+<<<<<<< HEAD
         try:
             data = list(data)
         except Exception as e:
@@ -14,16 +15,20 @@ class Buffer:
 
         if data != []:
             self.data = np.array(data)
+=======
+        if data is not None:
+            self.data = data
+>>>>>>> develop
         else:
             self.data = np.zeros(size)
 
     def __mul__(self, other):
         if isinstance(other, float):
             res = self.data * other
-            return Buffer(len(res), res.tolist())
+            return Buffer(len(res), res)
         elif isinstance(other, Buffer):
             res = self.data * other.data
-            return Buffer(len(res), res.tolist())
+            return Buffer(len(res), res)
 
     def __len__(self):
         return len(self.data)
@@ -60,7 +65,7 @@ class Buffer:
 
     def slice(self, r: range):
         ar = self.data[r.start:r.stop]
-        return Buffer(len(ar), data = ar)
+        return Buffer(len(ar), data = np.copy(ar))
 
 class StereoBuffer:
 

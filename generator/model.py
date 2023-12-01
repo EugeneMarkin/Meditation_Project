@@ -33,17 +33,14 @@ class Mood(Enum):
         end = int(start + (grain_size * SAMPLE_RATE)) - 1
         return range(start, end)
 
-    def envelope(self, sz):
-        ar = np.zeros(sz)
-        ar.fill(1)
-
+    def apply_envelope(self, buf):
+        sz = len(buf)
         fade_len = int(sz * 0.1)
         attack = np.arange(0, fade_len)/fade_len
-        ar[0 : fade_len] = ar[0 : fade_len] * attack
+        buf.data[0 : fade_len] = buf.data[0 : fade_len] * attack
         release = np.flip(attack)
-        ar[sz - fade_len : sz] = ar[sz - fade_len : sz] * release
+        buf.data[sz - fade_len : sz] = buf.data[sz - fade_len : sz] * release
 
-        return Buffer(len(ar), ar)
 
     def play_rate(self):
         """
@@ -106,13 +103,14 @@ class Section:
                 break
             # generate grain
             sound = random.choice(files)
-            grain_buf = sound.buf.slice(self.mood.grain_range(sound))
+            r = self.mood.grain_range(sound)
+            grain_buf = sound.buf.slice(r)
             # Apply randomized amp to each grain
             grain_buf = grain_buf * self.mood.amp()
             # Apply play rate
             grain_buf.play_rate = self.mood.play_rate()
             # Apply envelope
-            grain_buf = grain_buf * self.mood.envelope(len(grain_buf))
+            self.mood.apply_envelope(grain_buf)
             # Add the grain to the final buffer
             pos = random.randint(pos, pos + len(grain_buf))
             self.buf.write(grain_buf, pan_ = self.mood.pan(), at = pos)
