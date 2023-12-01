@@ -7,18 +7,8 @@ class Buffer:
 
     def __init__(self, size, data = None):
         self.pr = 1
-<<<<<<< HEAD
-        try:
-            data = list(data)
-        except Exception as e:
-            print("Buffer input is not a list ", e)
-
-        if data != []:
-            self.data = np.array(data)
-=======
         if data is not None:
             self.data = data
->>>>>>> develop
         else:
             self.data = np.zeros(size)
 
