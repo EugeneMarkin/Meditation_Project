@@ -30,7 +30,6 @@ class InputFile:
         if not os.path.exists(self.wav_path):
             print("Something went wrong. There's no wav file for ", self.name)
         data, fs = librosa.load(self.wav_path, sr = SAMPLE_RATE)
-        data = list(data)
         self.buf = Buffer(len(data), data = data)
         self.duration = float(len(data))/SAMPLE_RATE
 
@@ -69,8 +68,7 @@ class InputFile:
 
 class SoundCollection:
 
-    def __init__(self, path):
-        self.path = path
+    def __init__(self):
         l = os.listdir(IN_MP3_PATH)
         l = list(filter(lambda x: ".mp3" in x, l))
         self.sounds = list(map(lambda x: InputFile(x), l))

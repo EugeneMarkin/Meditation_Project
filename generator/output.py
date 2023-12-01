@@ -8,7 +8,7 @@ import librosa
 from copy import copy
 from pydub import AudioSegment
 
-from constants import SAMPLE_RATE, IN_MP3_PATH, OUT_MP3_PATH, MUSIC_PATH, MUSIC_AMP
+from constants import SAMPLE_RATE, IN_MP3_PATH, OUT_WAV_PATH, MUSIC_PATH, MUSIC_AMP
 from generator.buffer import Buffer, StereoBuffer
 from generator.input import SoundCollection
 from generator.model import Section
@@ -16,23 +16,17 @@ from generator.model import Section
 
 OUT_PATH = "/Users/eugenemarkin/Documents/meditation/output"
 
-def get_out_file():
-    sc = SoundCollection(IN_MP3_PATH)
-    music, fs = librosa.load(MUSIC_PATH, sr=SAMPLE_RATE, mono=False)
-    dur = len(music[0])
-
-    music_buf = StereoBuffer(dur)
-    music_buf.left = Buffer(dur, music[0]) * MUSIC_AMP
-    music_buf.right = Buffer(dur, music[1]) * MUSIC_AMP
-    sc = SoundCollection(IN_MP3_PATH)
-    of = OutputFile(dur, sc)
-    of.buf = copy(music_buf)
-    return of
 
 class OutputFile :
-    def __init__(self, size, sc):
-        self.sc = sc
-        self.buf = StereoBuffer(size)
+    def __init__(self):
+
+        music, fs = librosa.load(MUSIC_PATH, sr=SAMPLE_RATE, mono=False)
+        dur = len(music[0])
+
+        self.buf = StereoBuffer(dur)
+        self.buf.left = Buffer(dur, music[0]) * MUSIC_AMP
+        self.buf.right = Buffer(dur, music[1]) * MUSIC_AMP
+        self.sc = SoundCollection()
         self.length = len(self.buf)
 
     def add_section(self, section, at_time: float):
@@ -42,9 +36,9 @@ class OutputFile :
     def add(self, dur, kw, mood, at_time):
         self.add_section(Section(dur, self.sc.get_by_keyword(kw), mood), at_time)
 
-    def save(self, to: str):
+    def save_wav(self):
         try:
-            with wave.open(to, "wb") as file:
+            with wave.open(OUT_WAV_PATH, "wb") as file:
                 file.setnchannels(2)
                 file.setsampwidth(2)
                 file.setframerate(SAMPLE_RATE)

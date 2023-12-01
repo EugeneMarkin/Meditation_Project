@@ -1,24 +1,14 @@
-from generator.input import InputFile, SoundCollection
+from generator.input import InputFile
 from generator.output import OutputFile
-from generator.model import Section
+from generator.model import Section, Mood
 
-def generate():
-    sc = SoundCollection(INPUT_PATH)
-    out_file = OutputFile(60 * 3 * SAMPLE_RATE)
+async def generate():
+    out = OutputFile()
 
-    sec_normal = Section(dur = 20.0, files = sc.get_by_keyword("body"), mood = Mood.Normal)
-    out_file.add_section(sec_normal, at_time = 0.0)
+    out.add(dur=30.0, kw="body", mood=Mood.Normal, at_time=0.0)
+    out.add(dur=30.0, kw="relax", mood=Mood.Relaxed, at_time=30.0)
+    out.add(dur=60.0, kw="body", mood=Mood.Uncanny, at_time=60.0)
+    out.add(dur=60.0, kw="relax", mood=Mood.Creepy, at_time=120.0)
+    out.add(dur=60.0, kw="mind", mood=Mood.Intense, at_time=180.0)
 
-    sec_relaxed = Section(dur = 20.0, files = sc.get_by_keyword("relax"), mood = Mood.Relaxed)
-    out_file.add_section(sec_relaxed, at_time = 20.0)
-
-    sec_uncanny = Section(dur = 30.0, files = sc.get_by_keyword("deep"), mood = Mood.Uncanny)
-    out_file.add_section(sec_uncanny, 30.0)
-
-    sec_creepy = Section(dur = 40.0, files = sc.get_by_keyword("relax"), mood = Mood.Creepy)
-    out_file.add_section(sec_creepy, 50)
-
-    sec_intense = Section(dur = 40.0, files = sc.get_by_keyword("mind"), mood = Mood.Intense)
-    out_file.add_section(sec_intense, 60)
-
-    out_file.save_mp3()
+    out.save_wav()
