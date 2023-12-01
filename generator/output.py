@@ -16,13 +16,11 @@ from generator.model import Section
 
 OUT_PATH = "/Users/eugenemarkin/Documents/meditation/output"
 
+music, _ = librosa.load(MUSIC_PATH, sr=SAMPLE_RATE, mono=False)
 
 class OutputFile :
     def __init__(self):
-
-        music, fs = librosa.load(MUSIC_PATH, sr=SAMPLE_RATE, mono=False)
         dur = len(music[0])
-
         self.buf = StereoBuffer(dur)
         self.buf.left = Buffer(dur, music[0]) * MUSIC_AMP
         self.buf.right = Buffer(dur, music[1]) * MUSIC_AMP
