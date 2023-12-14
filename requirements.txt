@@ -5,3 +5,4 @@ speechrecognition>=3.10.0
 wave>=0.0.2
 pydub>=0.25.1
 django>=4.2.6
+django-cors-headers>=4.3.1
